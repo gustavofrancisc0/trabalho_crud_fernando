@@ -25,7 +25,10 @@ $produtos = $controller->listar();
                 <tbody><?php foreach ($produtos as $produto): ?><tr>
                     <td><?= e($produto['id']) ?></td><td class="fw-semibold"><?= e($produto['nome']) ?></td>
                     <td><?= e($produto['descricao']) ?></td><td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
-                    <td><?= e($produto['estoque']) ?></td><td class="text-muted">Edição e exclusão serão adicionadas na próxima etapa.</td>
+                    <td><?= e($produto['estoque']) ?></td><td class="text-nowrap">
+                        <a href="editar.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-primary btn-sm">Editar</a>
+                        <a href="excluir.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Deseja excluir este produto?')">Excluir</a>
+                    </td>
                 </tr><?php endforeach; ?></tbody>
             </table></div>
         <?php endif; ?>
