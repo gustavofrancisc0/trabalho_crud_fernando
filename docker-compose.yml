@@ -1,0 +1,34 @@
+services: # Define os serviços da aplicação
+  app: # Serviço que executa a aplicação PHP
+    build: # Configuração para criar a imagem da aplicação
+      context: . # Usa a pasta atual como contexto do build
+    container_name: crud-produtos-app # Define o nome do container PHP
+    ports: # Define as portas acessíveis pelo computador
+      - "8080:80" # Mapeia a porta 8080 do computador para a porta 80 do Apache
+    environment: # Variáveis usadas pelo PHP para conectar ao banco
+      DB_HOST: db # Nome do serviço do MySQL na rede Docker
+      DB_NAME: produtos # Nome do banco de dados
+      DB_USER: root # Usuário do banco de dados
+      DB_PASSWORD: root # Senha do usuário do banco
+    depends_on: # Define a dependência entre os serviços
+      - db # Inicia o container do banco junto com a aplicação
+    networks: # Define as redes da aplicação
+      - crud-rede # Conecta a aplicação à rede personalizada
+
+  db: # Serviço que executa o banco de dados MySQL
+    image: mysql:8.0 # Usa a imagem oficial do MySQL versão 8.0
+    container_name: crud-produtos-db # Define o nome do container do banco
+    environment: # Variáveis de configuração inicial do MySQL
+      MYSQL_ROOT_PASSWORD: root # Define a senha do usuário root
+      MYSQL_DATABASE: produtos # Cria o banco produtos automaticamente
+    volumes: # Define os volumes usados pelo banco
+      - mysql-dados:/var/lib/mysql # Persiste os dados do MySQL
+    networks: # Define as redes do banco
+      - crud-rede # Conecta o banco à mesma rede da aplicação
+
+volumes: # Declara os volumes nomeados do Docker
+  mysql-dados: # Volume que evita a perda dos registros
+
+networks: # Declara as redes personalizadas do Docker
+  crud-rede: # Nome da rede usada pelos serviços
+    driver: bridge # Usa o driver bridge para comunicação entre containers

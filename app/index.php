@@ -1,6 +1,6 @@
 <?php
-require_once 'conexao.php';
-$produtos = $pdo->query('SELECT * FROM produtos ORDER BY id DESC')->fetchAll();
+require_once 'bootstrap.php';
+$produtos = $controller->listar();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -11,18 +11,25 @@ $produtos = $pdo->query('SELECT * FROM produtos ORDER BY id DESC')->fetchAll();
 </head>
 <body class="bg-light">
 <main class="container py-5">
-    <h1 class="mb-4">Produtos</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Cadastro de produtos</h1>
+        <a href="criar.php" class="btn btn-primary">Novo produto</a>
+    </div>
     <?php if (isset($_GET['sucesso'])): ?><div class="alert alert-success">Operação realizada com sucesso.</div><?php endif; ?>
     <div class="card shadow-sm"><div class="card-body">
         <?php if (!$produtos): ?>
             <p class="text-muted mb-0">Nenhum produto cadastrado.</p>
         <?php else: ?>
             <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                    <thead><tr><th>ID</th><th>Nome</th><th>Descrição</th><th>Preço</th><th>Estoque</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Nome</th><th>Descrição</th><th>Preço</th><th>Estoque</th><th>Cadastro</th><th>Ações</th></tr></thead>
                 <tbody><?php foreach ($produtos as $produto): ?><tr>
                     <td><?= e($produto['id']) ?></td><td class="fw-semibold"><?= e($produto['nome']) ?></td>
                     <td><?= e($produto['descricao']) ?></td><td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
                     <td><?= e($produto['estoque']) ?></td>
+                    <td><?= e(date('d/m/Y H:i', strtotime($produto['data_cadastro']))) ?></td><td class="text-nowrap">
+                        <a href="editar.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-primary btn-sm">Editar</a>
+                        <a href="excluir.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Deseja excluir este produto?')">Excluir</a>
+                    </td>
                 </tr><?php endforeach; ?></tbody>
             </table></div>
         <?php endif; ?>
