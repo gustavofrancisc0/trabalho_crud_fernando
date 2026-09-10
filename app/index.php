@@ -27,6 +27,11 @@ $produtos = $controller->listar();
                     <td><?= e($produto['descricao']) ?></td><td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
                     <td><?= e($produto['estoque']) ?></td>
                     <td><?= e(date('d/m/Y H:i', strtotime($produto['data_cadastro']))) ?></td><td class="text-nowrap">
+                <thead><tr><th>ID</th><th>Nome</th><th>Descrição</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr></thead>
+                <tbody><?php foreach ($produtos as $produto): ?><tr>
+                    <td><?= e($produto['id']) ?></td><td class="fw-semibold"><?= e($produto['nome']) ?></td>
+                    <td><?= e($produto['descricao']) ?></td><td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                    <td><?= e($produto['estoque']) ?></td><td class="text-nowrap">
                         <a href="editar.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-primary btn-sm">Editar</a>
                         <a href="excluir.php?id=<?= e($produto['id']) ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Deseja excluir este produto?')">Excluir</a>
                     </td>
